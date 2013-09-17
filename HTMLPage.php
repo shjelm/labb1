@@ -22,4 +22,17 @@ class HTMLPage {
 					</body>
 				</html>';
 	}
+	function fillValue($value){
+return '<h2>Ej inloggad</h2>
+		<fieldset>
+			<legend>Skriv in användarnamn och lösenord</legend>
+				<form method="post" action="?login">
+					<label for="UserName">Användarnamn: </label>
+					<input type="text" name="UserName" id="UserName" value="'.$value.'">
+					<label for="Password">Lösenord: </label>
+					<input type="password" name="Password" id="Password" value>
+			      	<input type="submit" name="login" value="Logga in" />
+		    	</form>';
+
+}
 }
