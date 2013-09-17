@@ -6,31 +6,32 @@ require_once("loggedin.php");
 $pageView = new \view\HTMLPage();
 $loggedInView = new \view\loggedIn();
 
-$form ='<form method="post" action="?login">
-				<label for:"UserName">Användarnamn: </label>
-				<input type:"text" name="UserName" id="UserName" value>
-				<label for="Password">Lösenord: </label>
-				<input type="password" name="Password" id="Password" value>
-		      	<input type="submit" name="login" value="Logga in" />
+$form ='<h2>Ej inloggad</h2>
+			<form method="post" action="?login">
+			<label for:"UserName">Användarnamn: </label>
+			<input type:"text" name="UserName" id="UserName" value>
+			<label for="Password">Lösenord: </label>
+			<input type="password" name="Password" id="Password" value>
+	      	<input type="submit" name="login" value="Logga in" />
 	    </form>';
 $loggedIn ='<h1> Admin loggade in </h1>
 		<p>Inloggningen lyckades</p><p><a href="?logout">Logga ut</a></p>';
-				   		
-echo $pageView->getPage($form);
 
 if (isset($_POST['login'])) {
 	if($_POST['UserName'] == "Admin" && $_POST['Password'] == "Password"){
-		echo $pageView->getPage($loggedIn);
+		$form =$loggedIn;
 	}	
 	else if($_POST['UserName'] == ''){
-		echo $pageView->getPage('<p>Användarnamn saknas</p>');
+		$form.='<p>Användarnamn saknas</p>';
 	}
 	else if( $_POST['Password'] == ''){
-		echo $pageView->getPage('<p>Lösenord saknas</p>');
+		$form.='<p>Lösenord saknas</p>';
 	}
-	else{ echo $pageView->getPage('<p>Felaktigt användarnamn och/eller lösenord</p>');
+	else{ $form.='<p>Felaktigt användarnamn och/eller lösenord</p>';
 	}
 }
+
+echo $pageView->getPage($form);
 
 
 /*if (isset($_POST['login'])) {
