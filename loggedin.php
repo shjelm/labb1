@@ -10,7 +10,7 @@ class loggedIn{
 							</head>
 							<body>
 								<h1> Admin är inloggad </h1>
-						   		</form>
+								<p><a href="?logout">Logga ut</a></p>
 							</body>
 						</html>';
 				}
