@@ -1,7 +1,8 @@
 <?php 
-
 require_once("HTMLPage.php");
 require_once("loggedin.php");
+
+session_start();
 
 $pageView = new \view\HTMLPage();
 $loggedInView = new \view\loggedIn();
@@ -22,14 +23,18 @@ $loggedIn ='<h2> Admin loggade in </h2>
 		
 $logIn = '<h1>Laboration 1</h1>';
 
+
 if (isset($_POST['login'])) {
-	if($_POST['UserName'] == "Admin" && $_POST['Password'] == "Password"){
+	$_SESSION['username'] = $_POST['UserName'];
+	$_SESSION['password'] = $_POST['Password'];
+	
+	if($_SESSION['username'] == "Admin" && $_SESSION['password'] == "Password"){
 		$form = $loggedIn;
-	}	
-	else if($_POST['UserName'] == ''){
+	}
+	else if($_SESSION['username'] == ''){
 		$form.='<p>Användarnamn saknas</p>';
 	}
-	else if( $_POST['Password'] == ''){
+	else if( $_SESSION['password'] == ''){
 		$form.='<p>Lösenord saknas</p>';
 	}
 	else{ $form.='<p>Felaktigt användarnamn och/eller lösenord</p>';
