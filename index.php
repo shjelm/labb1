@@ -7,28 +7,28 @@ $pageView = new \view\HTMLPage();
 $loggedInView = new \view\loggedIn();
 
 $form ='<form method="post" action="?login">
-				<label for:"UserName">Username: </label>
+				<label for:"UserName">Användarnamn: </label>
 				<input type:"text" name="UserName" id="UserName" value>
-				<label for="Password">Password: </label>
+				<label for="Password">Lösenord: </label>
 				<input type="password" name="Password" id="Password" value>
-		      	<input type="submit" name="login" value="Log in" />
+		      	<input type="submit" name="login" value="Logga in" />
 	    </form>';
-$loggedIn ='<h1> Admin signed in </h1>
-		<p>Successfully logged in </p><p><a href="?logout">Log out</a></p>';
+$loggedIn ='<h1> Admin loggade in </h1>
+		<p>Inloggningen lyckades</p><p><a href="?logout">Logga ut</a></p>';
 				   		
 echo $pageView->getPage($form);
 
 if (isset($_POST['login'])) {
 	if($_POST['UserName'] == "Admin" && $_POST['Password'] == "Password"){
 		echo $pageView->getPage($loggedIn);
-	}
-	else{ echo $pageView->getPage('<p>Incorrect username and/or password</p>');
-	}
-	if($_POST['UserName'] == ''){
+	}	
+	else if($_POST['UserName'] == ''){
 		echo $pageView->getPage('<p>Användarnamn saknas</p>');
 	}
 	else if( $_POST['Password'] == ''){
 		echo $pageView->getPage('<p>Lösenord saknas</p>');
+	}
+	else{ echo $pageView->getPage('<p>Felaktigt användarnamn och/eller lösenord</p>');
 	}
 }
 

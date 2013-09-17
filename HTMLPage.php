@@ -8,12 +8,13 @@ namespace view;
 	 
 class HTMLPage {
 	public function getPage($body){
+		setlocale(LC_ALL, "swedish");
 		return'<html>
 					<head>
-						<h1>Log in</h1>
+						<h1>Logga in</h1>
 					</head>
 					<body>'. $body.'
-					<p>'.  date('l jS \of F Y h:i:s A') .'</p>	
+					<p>'.  strftime('%A, den %d %B år %Y. Klockan är: %H:%M:%S ') .'</p>	
 					</body>
 				</html>';
 	}
