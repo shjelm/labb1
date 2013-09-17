@@ -36,7 +36,7 @@ if (isset($_POST['login'])) {
 	if($_SESSION['username'] == "Admin" && $_SESSION['password'] == "Password"){
 		$_SESSION['mySession'] = true;
 		
-		if (isset($_SESSION["mySession"]) && $_SESSION["mySession"])
+		if (isset($_SESSION['mySession']) && $_SESSION['mySession'])
 			{
 				$form = $loggedIn;				
 			}
@@ -56,8 +56,3 @@ if (isset($_POST['login'])) {
 }
 
 echo $pageView->getPage($logIn,$form.='</fieldset>');
-
-if (isset($_SESSION["mySession"]) && $_SESSION["mySession"])
-{
-	$form = $loggedIn;
-}
