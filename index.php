@@ -1,58 +1,101 @@
 <?php 
-require_once("HTMLPage.php");
-require_once("loggedin.php");
 
 session_start();
 
-$pageView = new \view\HTMLPage();
-$loggedInView = new \view\loggedIn();
+$message = null;
 
-if($_POST){
-	$form = $pageView->fillValue($_POST['UserName']);
+if(isset($_POST['logout'])){
+	getLogOutPage();
 }
-else {
-	$form = '<h2>Ej inloggad</h2>
-		<fieldset>
-			<legend>Skriv in användarnamn och lösenord</legend>
-				<form method="post" action="?login">
-					<label for="UserName">Användarnamn: </label>
-					<input type="text" name="UserName" id="UserName" value>
-					<label for="Password">Lösenord: </label>
-					<input type="password" name="Password" id="Password" value>
-			      	<input type="submit" name="login" value="Logga in" />
-		    	</form>';
-}
-				
-$loggedIn ='<h2> Admin loggade in </h2>
-		<p>Inloggningen lyckades</p><p><a id="logout" href="?logout">Logga ut</a></p>';
-		
-$logIn = '<h1>Laboration 1</h1>';
 
-
-if (isset($_POST['login'])) {
-	$_SESSION['username'] = $_POST['UserName'];
-	$_SESSION['password'] = $_POST['Password'];
-	
-	if($_SESSION['username'] == "Admin" && $_SESSION['password'] == "Password"){
+if(isset($_POST)){	
+	if($_POST['UserName'] == "Admin" && $_POST['Password'] == "Password"){
 		$_SESSION['mySession'] = true;
-		
-		if (isset($_SESSION['mySession']) && $_SESSION['mySession'])
-			{
-				$form = $loggedIn;				
+	}
+	else if(empty($_POST['UserName'])){
+		$message='<p>Användarnamn saknas</p>';
 			}
+	else if(empty($_POST['Password'])){
+		$message='<p>Lösenord saknas</p>';
 	}
-	else if($_SESSION['username'] == ''){
-		$form.='<p>Användarnamn saknas</p>';
-		
+	else{ $message='<p>Felaktigt användarnamn och/eller lösenord</p>';
 	}
-	else if( $_SESSION['password'] == ''){
-		$form.='<p>Lösenord saknas</p>';
-		$_POST['UserName'] = $_SESSION['username'];
-	}
-	else{ $form.='<p>Felaktigt användarnamn och/eller lösenord</p>';
-	}
-	unset($_SESSION);
-	/*header("Location: index.php");*/
+}
+			
+if(isset($_SESSION['mySession'])){
+	getLoggedInPage();
+}
+else{
+	getPage($message);
 }
 
-echo $pageView->getPage($logIn,$form.='</fieldset>');
+function getPage($message){
+	$value = null;
+	
+	if(isset($_POST['UserName'])){
+		$value = $_POST['UserName'];
+	}
+	
+	$html  ='<html>
+					<head>
+						<title> Laboration 1 sh222mw </title>
+						<link rel="Stylesheet" href="basic.css">
+						<meta charset="UTF-8">
+					</head>
+					<body>
+						<h2>Ej inloggad</h2>
+						<fieldset>
+							<legend>Skriv in användarnamn och lösenord</legend>
+								<form method="post" action="index.php">
+									<label for="UserName">Användarnamn: </label>
+									<input type="text" name="UserName" id="UserName" value="'.$value.'">
+									<label for="Password">Lösenord: </label>
+									<input type="password" name="Password" id="Password" value="">
+							      	<input type="submit" name="login" value="Logga in" />
+						    	</form>';
+								
+			    	$html.= $message;
+						
+					$html.= '</fieldset>
+				    <p class="time">'.getClock().'</p>	
+					</body>
+				</html>';
+				
+		
+	
+	echo $html;
+}
+
+function getLoggedInPage(){
+	$loggedInHTML = '<html>
+					<head>
+						<title> Laboration 1 sh222mw </title>
+						<link rel="Stylesheet" href="basic.css">
+						<meta charset="UTF-8">
+					</head>
+					<body>
+						<h2> Admin loggade in </h2> 
+						<p>Inloggningen lyckades</p>
+						<form method="post" action="">
+						<input type="submit" name="logout" value="Logga ut" /> 
+						</form>
+						<p class="time">'.getClock().'</p>	
+					</body>
+				</html>';
+				
+				echo $loggedInHTML;
+}
+
+function getLogOutPage(){
+	unset($_SESSION['mySession']);
+	
+	$message = "Du har loggat ut";
+	
+	getPage($message);
+	exit;
+}
+
+function getClock(){
+	setlocale(LC_ALL, "swedish");
+	return strftime('%A, den %d %B år %Y. Klockan är: [%H:%M:%S] ');
+}
