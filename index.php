@@ -80,7 +80,7 @@ function getLoggedInPage($successMessage){
 						<h1>Laboration 1 sh222mw</h1>
 					</head>
 					<body>
-						<h2> Admin loggade in </h2>'.$successMessage.' 
+						<h2> Admin är inloggad </h2>'.$successMessage.' 
 						<form method="post" action="">
 						<input type="submit" name="logout" value="Logga ut" /> 
 						</form>
