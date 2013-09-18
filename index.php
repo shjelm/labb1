@@ -42,15 +42,15 @@ function getPage($message){
 		$value = $_POST['UserName'];
 	}
 	
-	$html  ='<!DOCTYPE HTML SYSTEM>
+	$html  ='<!DOCTYPE HTML>
 			 <html>
 					<head>
 						<title> Laboration 1 sh222mw </title>
 						<link rel="Stylesheet" href="basic.css">
 						<meta charset="UTF-8">
-						<h1>Laboration 1 sh222mw</h1>
 					</head>
 					<body>
+						<h1>Laboration 1 sh222mw</h1>
 						<h2>Ej inloggad</h2>
 						<fieldset>
 							<legend>Skriv in användarnamn och lösenord</legend>
@@ -73,7 +73,7 @@ function getPage($message){
 }
 
 function getLoggedInPage($successMessage){
-	$loggedInHTML = '<!DOCTYPE HTML SYSTEM>
+	$loggedInHTML = '<!DOCTYPE HTML>
 					 <html>
 						<head>
 							<title> Laboration 1 sh222mw </title>
