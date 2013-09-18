@@ -94,7 +94,7 @@ function getLoggedInPage($successMessage){
 function getLogOutPage(){
 	unset($_SESSION['mySession']);
 	
-	$message = "Du har loggat ut";
+	$message = "<p>Du har loggat ut</p>";
 	
 	getPage($message);
 	exit;
