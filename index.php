@@ -42,7 +42,8 @@ function getPage($message){
 		$value = $_POST['UserName'];
 	}
 	
-	$html  ='<html>
+	$html  ='<!DOCTYPE HTML SYSTEM>
+			 <html>
 					<head>
 						<title> Laboration 1 sh222mw </title>
 						<link rel="Stylesheet" href="basic.css">
@@ -72,21 +73,22 @@ function getPage($message){
 }
 
 function getLoggedInPage($successMessage){
-	$loggedInHTML = '<html>
-					<head>
-						<title> Laboration 1 sh222mw </title>
-						<link rel="Stylesheet" href="basic.css">
-						<meta charset="UTF-8">
-						<h1>Laboration 1 sh222mw</h1>
-					</head>
-					<body>
-						<h2> Admin är inloggad </h2>'.$successMessage.' 
-						<form method="post" action="">
-						<input type="submit" name="logout" value="Logga ut" /> 
-						</form>
-						<p class="time">'.getClock().'</p>	
-					</body>
-				</html>';
+	$loggedInHTML = '<!DOCTYPE HTML SYSTEM>
+					 <html>
+						<head>
+							<title> Laboration 1 sh222mw </title>
+							<link rel="Stylesheet" href="basic.css">
+							<meta charset="UTF-8">
+							<h1>Laboration 1 sh222mw</h1>
+						</head>
+						<body>
+							<h2> Admin är inloggad </h2>'.$successMessage.' 
+							<form method="post" action="">
+							<input type="submit" name="logout" value="Logga ut" /> 
+							</form>
+							<p class="time">'.getClock().'</p>	
+						</body>
+					</html>';
 				
 				echo $loggedInHTML;
 }
