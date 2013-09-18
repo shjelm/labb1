@@ -3,31 +3,37 @@
 session_start();
 
 $message = null;
+$successMessage = null;
 
 if(isset($_POST['logout'])){
 	getLogOutPage();
 }
 
-if(isset($_POST)){	
-	if($_POST['UserName'] == "Admin" && $_POST['Password'] == "Password"){
-		$_SESSION['mySession'] = true;
-	}
-	else if(empty($_POST['UserName'])){
-		$message='<p>Användarnamn saknas</p>';
-			}
-	else if(empty($_POST['Password'])){
-		$message='<p>Lösenord saknas</p>';
-	}
-	else{ $message='<p>Felaktigt användarnamn och/eller lösenord</p>';
+if($_POST){
+	if(isset($_POST)){	
+		if($_POST['UserName'] == "Admin" && $_POST['Password'] == "Password"){
+			$_SESSION['mySession'] = true;
+			
+			$successMessage = '<p>Inloggningen lyckades</p>';
+		}
+		else if(empty($_POST['UserName'])){
+			$message='<p>Användarnamn saknas</p>';
+				}
+		else if(empty($_POST['Password'])){
+			$message='<p>Lösenord saknas</p>';
+		}
+		else{ $message='<p>Felaktigt användarnamn och/eller lösenord</p>';
+		}
 	}
 }
 			
 if(isset($_SESSION['mySession'])){
-	getLoggedInPage();
+	getLoggedInPage($successMessage);
 }
 else{
 	getPage($message);
 }
+
 
 function getPage($message){
 	$value = null;
@@ -41,6 +47,7 @@ function getPage($message){
 						<title> Laboration 1 sh222mw </title>
 						<link rel="Stylesheet" href="basic.css">
 						<meta charset="UTF-8">
+						<h1>Laboration 1 sh222mw</h1>
 					</head>
 					<body>
 						<h2>Ej inloggad</h2>
@@ -54,28 +61,26 @@ function getPage($message){
 							      	<input type="submit" name="login" value="Logga in" />
 						    	</form>';
 								
-			    	$html.= $message;
+	$html.= $message;
 						
-					$html.= '</fieldset>
-				    <p class="time">'.getClock().'</p>	
-					</body>
-				</html>';
-				
-		
-	
+	$html.= '</fieldset>
+			    <p class="time">'.getClock().'</p>	
+				</body>
+			</html>';
+			
 	echo $html;
 }
 
-function getLoggedInPage(){
+function getLoggedInPage($successMessage){
 	$loggedInHTML = '<html>
 					<head>
 						<title> Laboration 1 sh222mw </title>
 						<link rel="Stylesheet" href="basic.css">
 						<meta charset="UTF-8">
+						<h1>Laboration 1 sh222mw</h1>
 					</head>
 					<body>
-						<h2> Admin loggade in </h2> 
-						<p>Inloggningen lyckades</p>
+						<h2> Admin loggade in </h2>'.$successMessage.' 
 						<form method="post" action="">
 						<input type="submit" name="logout" value="Logga ut" /> 
 						</form>
