@@ -65,8 +65,9 @@ class Application{
 			$HTMLPage = new HTMLPage;
 			$this->correctPassword = file_put_contents("password.txt", $this->cryptedPassword);
 			
-			if (isset($_POST[self::$logOut])) {
+			if (isset($_GET[self::$logOut])) {
 				$HTMLPage->getLogOutPage();
+				
 			}
 			
 			if ($_POST) {
@@ -184,5 +185,7 @@ class Application{
 		setcookie("username", $_POST[self::$username], $this->endtime);
 		$this->cryptedPassword = crypt($_POST[self::$password]);
 		setcookie("password", $this->cryptedPassword, $this->endtime);	
+		
+		
 	}		
 }

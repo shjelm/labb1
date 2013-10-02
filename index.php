@@ -8,3 +8,4 @@ $applicationView = new Application;
 $applicationView->runApplication();
 
 
+
