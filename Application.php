@@ -40,12 +40,12 @@ class Application{
 	/**
 	 * @var string
 	 */
-	private $correctPassword;
+	private $cryptedPassword;
 	
 	/**
 	 * @var string
 	 */
-	private $cryptedPassword;
+	private $passwordFromFile;
 	
 	/**
 	 * @var string
@@ -63,7 +63,7 @@ class Application{
 			 * @var HTMLPage 
 			 */
 			$HTMLPage = new HTMLPage;
-			$this->correctPassword = file_put_contents("password.txt", $this->cryptedPassword);
+			
 			
 			if (isset($_GET[self::$logOut])) {
 				$HTMLPage->getLogOutPage();
@@ -95,10 +95,10 @@ class Application{
 					}
 				}
 			}
-			if (isset($_COOKIE["password"])&& isset($_COOKIE["username"])){			
-			
+			if (isset($_COOKIE["password"])&& isset($_COOKIE["username"])){
+				$this->cryptedPassword = $_COOKIE["password"];	
 				
-				if(($_COOKIE["username"] == "Admin" && $_COOKIE["password"] == $this->correctPassword) && !isset($_SESSION[self::$mySession])){
+				if(($_COOKIE["username"] == "Admin" && $_COOKIE["password"] == $this->cryptedPassword) && !isset($_SESSION[self::$mySession])){
 						
 					$this->messageString = '<p>Inloggning lyckades via cookies</p>';
 					
@@ -110,13 +110,14 @@ class Application{
 								
 						$this->messageString = '<p>Felaktig information i cookie</p>';						
 					}						
-					$passwordFromFile = file_get_contents("password.txt");					
-					
-					if($this->correctPassword != $passwordFromFile)
+				}
+				$this->passwordFromFile = file_get_contents("password.txt");
+					if($this->cryptedPassword != $this->passwordFromFile)
 					{
 						$this->messageString = "<p>Felaktig information i cookie</p>";
+						setcookie("username", "",time()-3600);
+						setcookie("password", "",time()-3600);
 					}
-				}
 			}
 			
 			if (!isset($_SESSION["checkBrowser"])){
@@ -125,12 +126,13 @@ class Application{
 			}
 			$cookieEndtime = file_get_contents("endtime.txt");
 			
-			if(isset($_SESSION[self::$mySession] )) {
-				var_dump($_SESSION["checkBrowser"]["browser"]);
-				var_dump(self::getUserAgent());
+			if($_SESSION["checkBrowser"]["browser"] != self::getUserAgent()){
+				$HTMLPage->getPage($this->messageString);
+			}
+			else if(isset($_SESSION[self::$mySession])) {
 			$HTMLPage->getLoggedInPage($this->messageString);
 			}
-			else if($_SESSION["checkBrowser"]["browser"] != self::getUserAgent()){
+			else if($this->cryptedPassword != $this->passwordFromFile){
 				$HTMLPage->getPage($this->messageString);
 			}
 			else if (isset($_COOKIE["password"])&& isset($_COOKIE["username"]) && $cookieEndtime > time()){
@@ -184,6 +186,6 @@ class Application{
 		$this->cryptedPassword = crypt($_POST[self::$password]);
 		setcookie("password", $this->cryptedPassword, $this->endtime);	
 		
-		
+		file_put_contents("password.txt", $this->cryptedPassword);
 	}		
 }
