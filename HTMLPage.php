@@ -60,7 +60,7 @@ class HTMLPage{
 										<label for="Password">Lösenord: </label>
 										<input type="password" name="Password" id="Password" value="">
 										<label for="AutoLogin">Håll mig inloggad  :</label>
-										<input type="checkbox"" name="AutoLogin" id="Autologin" />									
+										<input type="checkbox" name="AutoLogin" id="AutoLogin" />									
 								      	<input type="submit" name="login" value="Logga in" />
 							    	</form>';
 	

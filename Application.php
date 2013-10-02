@@ -180,7 +180,7 @@ class Application{
 
 	public function checkAutoLogin(){
 		
-		$this->endtime = time() + 3600;
+		$this->endtime = time() + 30;
 		file_put_contents("endtime.txt", $this->endtime);
 		setcookie("username", $_POST[self::$username], $this->endtime);
 		$this->cryptedPassword = crypt($_POST[self::$password]);
