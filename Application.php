@@ -31,7 +31,7 @@ class Application{
 	 * @var string
 	 */	
 	private $messageString = null;
-		
+	
 	/** 
 	 *  Run application
 	 *  @throws Exception if something goes wrong
@@ -51,8 +51,15 @@ class Application{
 				if (isset($_POST)) {
 					if ($_POST[self::$username] == "Admin" && $_POST[self::$password] == "Password") {
 						$_SESSION[self::$mySession] = true;
-			
-						$this->messageString = '<p>Inloggningen lyckades</p>';
+						
+						if(isset($_POST['AutoLogin'])){
+					 		$this->checkAutoLogin();
+							
+							$this->messageString = '<p>Inloggning lyckades och vi kommer ihåg dig nästa gång</p>';
+						}
+						else{			
+							$this->messageString = '<p>Inloggningen lyckades</p>';
+						}
 					} 
 					else if (empty($_POST[self::$username])) {
 						$this->messageString = '<p>Användarnamn saknas</p>';
@@ -64,12 +71,23 @@ class Application{
 						 $this->messageString = '<p>Felaktigt användarnamn och/eller lösenord</p>';
 					}
 				}
-			}
-			assert(isset($this->messageString));
 			
-			if (isset($_SESSION[self::$mySession])) {
-				$HTMLPage->getLoggedInPage($this->messageString);
-			} 
+			
+			}
+			if (isset($_COOKIE["password"])&& isset($_COOKIE["username"])){
+					
+				$cryptedPassword = $_COOKIE["password"];
+			
+				if(($_COOKIE["username"] == "Admin" && $_COOKIE["password"] == $cryptedPassword) && !isset($_SESSION[self::$mySession])){
+						
+					$this->messageString = '<p>Inloggning lyckades via cookies</p>';						
+				}
+			}
+				
+			if(isset($_SESSION[self::$mySession]) || isset($_COOKIE["password"])&& isset($_COOKIE["username"])) {
+			$HTMLPage->getLoggedInPage($this->messageString);
+			}
+		
 			else {
 				$HTMLPage->getPage($this->messageString);
 			}
@@ -78,5 +96,13 @@ class Application{
 		{
 			echo "Something went wrong.";
 		}
+	}
+	public function checkAutoLogin(){
+		
+		setcookie("username", $_POST[self::$username], time()+3600);
+		$this->cryptedPassword = crypt($_POST[self::$password]);
+		setcookie("password", $this->cryptedPassword, time()+3600);	
+		
+		
 	}		
 }

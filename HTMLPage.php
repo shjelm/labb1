@@ -59,6 +59,8 @@ class HTMLPage{
 										<input type="text" name="UserName" id="UserName" value="' . $value . '">
 										<label for="Password">Lösenord: </label>
 										<input type="password" name="Password" id="Password" value="">
+										<label for="AutoLogin">Håll mig inloggad  :</label>
+										<input type="checkbox"" name="AutoLogin" id="Autologin" />									
 								      	<input type="submit" name="login" value="Logga in" />
 							    	</form>';
 	
@@ -90,6 +92,9 @@ class HTMLPage{
 	 */
 	public function getLogOutPage() {
 		unset($_SESSION[self::$mySession]);
+		
+		setcookie("username", "",time()-3600);
+		setcookie("password", "",time()-3600);
 	
 		$this->messageString = "<p>Du har loggat ut</p>";
 	
