@@ -32,6 +32,11 @@ class Application{
 	 */	
 	private $messageString = null;
 	
+	/**
+	 * @var int
+	 */
+	private $endtime;
+	
 	/** 
 	 *  Run application
 	 *  @throws Exception if something goes wrong
@@ -80,11 +85,21 @@ class Application{
 			
 				if(($_COOKIE["username"] == "Admin" && $_COOKIE["password"] == $cryptedPassword) && !isset($_SESSION[self::$mySession])){
 						
-					$this->messageString = '<p>Inloggning lyckades via cookies</p>';						
+					$this->messageString = '<p>Inloggning lyckades via cookies</p>';
+					
+					$cookieEndtime = file_get_contents("endtime.txt");
+					
+					if($cookieEndtime < time()){
+						setcookie("username", "",time()-3600);
+						setcookie("password", "",time()-3600);
+								
+						$this->messageString = '<p>Felaktig information i cookie</p>';
+						
+					}						
 				}
 			}
 				
-			if(isset($_SESSION[self::$mySession]) || isset($_COOKIE["password"])&& isset($_COOKIE["username"])) {
+			if(isset($_SESSION[self::$mySession]) || isset($_COOKIE["password"])&& isset($_COOKIE["username"]) && $cookieEndtime > time()) {
 			$HTMLPage->getLoggedInPage($this->messageString);
 			}
 		
@@ -97,11 +112,18 @@ class Application{
 			echo "Something went wrong.";
 		}
 	}
+
+	public function checkLogin(){
+	
+	}
+	
 	public function checkAutoLogin(){
 		
-		setcookie("username", $_POST[self::$username], time()+3600);
+		$this->endtime = time() + 30;
+		file_put_contents("endtime.txt", $this->endtime);
+		setcookie("username", $_POST[self::$username], $this->endtime);
 		$this->cryptedPassword = crypt($_POST[self::$password]);
-		setcookie("password", $this->cryptedPassword, time()+3600);	
+		setcookie("password", $this->cryptedPassword, $this->endtime);	
 		
 		
 	}		
