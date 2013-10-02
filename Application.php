@@ -114,28 +114,26 @@ class Application{
 					
 					if($this->correctPassword != $passwordFromFile)
 					{
-						$this->messageString = "<p>Felaktig information i cookie.... MEH</p>";
+						$this->messageString = "<p>Felaktig information i cookie</p>";
 					}
 				}
 			}
-			if (!isset($_SESSION["hej"])){
-				$_SESSION["hej"] = array();
-				$_SESSION["hej"]["browser"] = self::getUserAgent();
-			}
-			if ($_SESSION["hej"]["browser"] != self::getUserAgent()){
-				
-			}
 			
-			/**echo '<pre>';
-			var_dump(self::getUserAgent());
-			echo '</pre>';
-			die();
-			 * */
+			if (!isset($_SESSION["checkBrowser"])){
+				$_SESSION["checkBrowser"] = array();
+				$_SESSION["checkBrowser"]["browser"] = self::getUserAgent();
+			}
 			$cookieEndtime = file_get_contents("endtime.txt");
-			if(isset($_SESSION[self::$mySession])) {
+			
+			if(isset($_SESSION[self::$mySession] )) {
+				var_dump($_SESSION["checkBrowser"]["browser"]);
+				var_dump(self::getUserAgent());
 			$HTMLPage->getLoggedInPage($this->messageString);
 			}
-			else if (isset($_COOKIE["password"])&& isset($_COOKIE["username"]) && $cookieEndtime > time() || $_SESSION["hej"]["browser"] != self::getUserAgent()){
+			else if($_SESSION["checkBrowser"]["browser"] != self::getUserAgent()){
+				$HTMLPage->getPage($this->messageString);
+			}
+			else if (isset($_COOKIE["password"])&& isset($_COOKIE["username"]) && $cookieEndtime > time()){
 			$HTMLPage->getLoggedInPage($this->messageString);
 			}
 			else {
